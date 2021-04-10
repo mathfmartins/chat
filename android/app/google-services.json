@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "505944828140",
+    "firebase_url": "https://chat-4a1a8-default-rtdb.firebaseio.com",
+    "project_id": "chat-4a1a8",
+    "storage_bucket": "chat-4a1a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505944828140:android:ac30ef87493b4ef5435dc9",
+        "android_client_info": {
+          "package_name": "br.com.ciolfi.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505944828140-psh9emadvev7q0gdofqcn56b97e6f65k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4znnecMMdKr4s4S9tZhNCTmrlrD9Ys4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505944828140-psh9emadvev7q0gdofqcn56b97e6f65k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
