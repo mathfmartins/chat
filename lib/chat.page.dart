@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chat/chat.message.dart';
+import 'package:chat/firebase/firebase.shazam.dart';
 import 'package:chat/text.composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +17,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
 
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  // final GoogleSignIn googleSignIn = GoogleSignIn();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseUser _usuarioAtual;
   bool estaCarregando = false;
@@ -34,32 +35,34 @@ class _ChatPageState extends State<ChatPage> {
 
   }
 
-  Future<FirebaseUser> _getUser() async {
-    if(_usuarioAtual != null) 
-        return  _usuarioAtual; // se ele for nulo eu vou fazer o login:
-                                              //...
-    try {
-      final GoogleSignInAccount googleSignInAccount = 
-        await googleSignIn.signIn();
+  // Future<FirebaseUser> _getUser() async {
+  //   if(_usuarioAtual != null) 
+  //       return  _usuarioAtual; // se ele for nulo eu vou fazer o login:
+  //                                             //...
+  //   try {
+  //     final GoogleSignInAccount googleSignInAccount = 
+  //       await googleSignIn.signIn();
 
-      final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+  //     final GoogleSignInAuthentication googleSignInAuthentication =
+  //       await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.getCredential
-          (idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+  //     final AuthCredential credential = GoogleAuthProvider.getCredential
+  //         (idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
 
-      final AuthResult authResult = 
-        await FirebaseAuth.instance.signInWithCredential(credential);
+  //     final AuthResult authResult = 
+  //       await FirebaseAuth.instance.signInWithCredential(credential);
 
-      final FirebaseUser user = authResult.user;      
-      return user;  
-    } catch (error) {
-        return null;
-    }
-  }
+  //     final FirebaseUser user = authResult.user;      
+  //     return user;  
+  //   } catch (error) {
+  //       return null;
+  //   }
+  // }
 
-  void _enviarMensagem({String text, File imgFile}) async {
-    final FirebaseUser user = await _getUser();
+  void _enviarMensagem({String text, File imgFile, user: FirebaseUser}) async {
+  FirebaseUser user = ModalRoute.of(context).settings.arguments; 
+
+    // final FirebaseUser user = await _getUser();
     if (user == null) {
         // ignore: deprecated_member_use
         _scaffoldKey.currentState.showSnackBar(
@@ -84,7 +87,7 @@ class _ChatPageState extends State<ChatPage> {
         estaCarregando = true;
     });
     StorageTaskSnapshot taskSnapshot = 
-            await task.onComplete; //dessa forma eu espero, assim que a imagem for armazenada 
+            await task.onComplete; //dessa forma eu espero assim que a imagem for armazenada 
                                   //no storage do firebase, eu pego sua referencia
     String url = await taskSnapshot.ref.getDownloadURL(); 
    
@@ -115,18 +118,16 @@ class _ChatPageState extends State<ChatPage> {
           _usuarioAtual != null ? IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
-                FirebaseAuth.instance.signOut();
-                googleSignIn.signOut();
-              Navigator.of(context).pop(context);
-
+                  FireBaseShazam.googleSignIn.signOut();
+                   FirebaseAuth.instance.signOut();
+            Navigator.of(context).pop();
+                // googleSignIn.signOut();
                 // ignore: deprecated_member_use
-                _scaffoldKey.currentState.showSnackBar(
-                    SnackBar(
-                    content: Text('Você saiu com sucesso.'),
-                    backgroundColor: Colors.green,
-                ),
-                
-        );
+                // _scaffoldKey.currentState.showSnackBar(
+                //     SnackBar(
+                //     content: Text('Você saiu com sucesso.'),
+                //     backgroundColor: Colors.green,
+                // ),
             },
           ) : Container()
         ],

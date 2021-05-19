@@ -1,3 +1,4 @@
+import 'package:chat/firebase/firebase.shazam.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,44 +9,45 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  // final GoogleSignIn googleSignIn = GoogleSignIn();
+  // final Future<FirebaseUser> userFireBase = FireBaseShazam.getUser();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  FirebaseUser _usuarioAtual;
+  // FirebaseUser _usuarioAtual;
   bool estaCarregando = false;
   // final FirebaseUser user;
 
- Future<FirebaseUser> _getUser() async {
-    if(_usuarioAtual != null) 
-        return  _usuarioAtual; // se ele for nulo eu vou fazer o login:
-                                              //...
-    try {
-      final GoogleSignInAccount googleSignInAccount = 
-        await googleSignIn.signIn();
+//  Future<FirebaseUser> _getUser() async {
+//     if(_usuarioAtual != null) 
+//         return  _usuarioAtual; // se ele for nulo eu vou fazer o login:
+//                                               //...
+//     try {
+//       final GoogleSignInAccount googleSignInAccount = 
+//         await googleSignIn.signIn();
 
-      final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+//       final GoogleSignInAuthentication googleSignInAuthentication =
+//         await googleSignInAccount.authentication;
 
-      final AuthCredential credential = GoogleAuthProvider.getCredential
-          (idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+//       final AuthCredential credential = GoogleAuthProvider.getCredential
+//           (idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
 
-      final AuthResult authResult = 
-        await FirebaseAuth.instance.signInWithCredential(credential);
+//       final AuthResult authResult = 
+//         await FirebaseAuth.instance.signInWithCredential(credential);
 
-      final FirebaseUser user = authResult.user;    
-      Map<String, dynamic> data = {
-        "uid": user.uid,
-        "nome": user.displayName,
-        "foto": user.photoUrl,
-        "hora": Timestamp.now() 
-      };
+//       final FirebaseUser user = authResult.user;    
+//       Map<String, dynamic> data = {
+//         "uid": user.uid,
+//         "nome": user.displayName,
+//         "foto": user.photoUrl,
+//         "hora": Timestamp.now() 
+//       };
 
-      return user;  
-    } catch (error) {
-        return null;
-    }
-  }
+//       return user;  
+//     } catch (error) {
+//         return null;
+//     }
+//   }
 void entrar(BuildContext context) async {
-    final FirebaseUser user = await _getUser();
+    final FirebaseUser user = await FireBaseShazam.getUser();
     if (user == null) {
         // ignore: deprecated_member_use
         _scaffoldKey.currentState.showSnackBar(
@@ -55,7 +57,13 @@ void entrar(BuildContext context) async {
         );
     }
     else {
-        Navigator.of(context).pushNamed('/conversa');
+    //   Map<String, dynamic> data = {
+    //   "uid": user.uid,
+    //   "nome": user.displayName,
+    //   "foto": user.photoUrl,
+    //   "hora": Timestamp.now() 
+    // };
+        Navigator.of(context).pushNamed('/chat', arguments: user);
     }
 }
 class _LoginPageState extends State<LoginPage> {

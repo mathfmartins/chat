@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -8,7 +9,7 @@ class TextComposer extends StatefulWidget {
 
   TextComposer(this._enviarMensagem);
   
-  final Function({String text, File imgFile}) _enviarMensagem;
+  final Function({String text, File imgFile, FirebaseUser user}) _enviarMensagem;
 
   
   @override
