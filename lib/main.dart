@@ -1,4 +1,5 @@
 import 'package:chat/chat.page.dart';
+import 'package:chat/login.page.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -37,13 +38,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Freedom',
+      title: 'Shazam',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        iconTheme: IconThemeData(color: Colors.purple[400])
+        iconTheme: IconThemeData(color: Colors.orange[400])
       ),
-      home: ChatPage(),
+      routes: {
+        '/': (context) => LoginPage(),
+        // '/': (context) => ContatosPage(),
+        '/conversa': (context) => ChatPage(),
+      },
+      // home: ChatPage(),
     );
   }
 }

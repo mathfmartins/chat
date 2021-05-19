@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chat/chat.message.dart';
 import 'package:chat/text.composer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,11 +19,15 @@ class _ChatPageState extends State<ChatPage> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseUser _usuarioAtual;
+  bool estaCarregando = false;
 
   void initState() {
       super.initState();
 
       FirebaseAuth.instance.onAuthStateChanged.listen((user) {
+        setState(() {
+                  _usuarioAtual = user;
+        });
       _usuarioAtual = user;
 
    });  
@@ -65,8 +70,9 @@ class _ChatPageState extends State<ChatPage> {
     }
     Map<String, dynamic> data = {
       "uid": user.uid,
-      "Nome": user.displayName,
-      "foto": user.photoUrl
+      "nome": user.displayName,
+      "foto": user.photoUrl,
+      "hora": Timestamp.now() 
     };
 
     if(imgFile != null) {
@@ -74,12 +80,19 @@ class _ChatPageState extends State<ChatPage> {
           DateTime.now().microsecondsSinceEpoch.toString()
       ).putFile(imgFile); 
 
+    setState(() {
+        estaCarregando = true;
+    });
     StorageTaskSnapshot taskSnapshot = 
-            await task.onComplete; //dessa forma eu espero assim que a imagem for armazenada 
+            await task.onComplete; //dessa forma eu espero, assim que a imagem for armazenada 
                                   //no storage do firebase, eu pego sua referencia
     String url = await taskSnapshot.ref.getDownloadURL(); 
    
     data['imgUrl'] = url;
+
+     setState(() {
+        estaCarregando = false;
+    });
   }
 
   if (text != null) data['texto'] = text;
@@ -94,15 +107,33 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Shazam'),
+        title: Text(
+          _usuarioAtual != null ? 'Olá, ${_usuarioAtual.displayName}' : 'Shazam'),
+          centerTitle: true,
         elevation: 0,
+        actions: [
+          _usuarioAtual != null ? IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+                FirebaseAuth.instance.signOut();
+                googleSignIn.signOut();
+                // ignore: deprecated_member_use
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(
+                    content: Text('Você saiu com sucesso.'),
+                    backgroundColor: Colors.green,
+                ),
+        );
+            },
+          ) : Container()
+        ],
       ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               //sempre que houver alguma modificação na collection 'mensagens', a stream será recarregada
-              stream: Firestore.instance.collection('mensagens').snapshots(),
+              stream: Firestore.instance.collection('mensagens').orderBy('hora').snapshots(),
               builder: (context, snapshot) {
                 switch(snapshot.connectionState) {
                   case ConnectionState.none:
@@ -116,7 +147,8 @@ class _ChatPageState extends State<ChatPage> {
                       reverse: true,
                       itemBuilder: (context, index){
                         return ListTile(
-                          title: Text(documents[index].data['texto']),
+                          title: ChatMessage(documents[index].data, //true, suponde que todas as mensagens são minhas
+                                            documents[index].data['uid'] == _usuarioAtual?.uid)  
                         );
                       }, 
                     );
@@ -124,6 +156,7 @@ class _ChatPageState extends State<ChatPage> {
               },
             ),
           ),
+          estaCarregando ? LinearProgressIndicator() : Container(),
           TextComposer(_enviarMensagem),
         ],
       ),
