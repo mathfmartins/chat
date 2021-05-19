@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class ChatPage extends StatefulWidget {
 
@@ -34,30 +33,6 @@ class _ChatPageState extends State<ChatPage> {
    });  
 
   }
-
-  // Future<FirebaseUser> _getUser() async {
-  //   if(_usuarioAtual != null) 
-  //       return  _usuarioAtual; // se ele for nulo eu vou fazer o login:
-  //                                             //...
-  //   try {
-  //     final GoogleSignInAccount googleSignInAccount = 
-  //       await googleSignIn.signIn();
-
-  //     final GoogleSignInAuthentication googleSignInAuthentication =
-  //       await googleSignInAccount.authentication;
-
-  //     final AuthCredential credential = GoogleAuthProvider.getCredential
-  //         (idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
-
-  //     final AuthResult authResult = 
-  //       await FirebaseAuth.instance.signInWithCredential(credential);
-
-  //     final FirebaseUser user = authResult.user;      
-  //     return user;  
-  //   } catch (error) {
-  //       return null;
-  //   }
-  // }
 
   void _enviarMensagem({String text, File imgFile, user: FirebaseUser}) async {
   FirebaseUser user = ModalRoute.of(context).settings.arguments; 
@@ -120,14 +95,14 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: () {
                   FireBaseShazam.googleSignIn.signOut();
                    FirebaseAuth.instance.signOut();
-            Navigator.of(context).pop();
+                   Navigator.of(context).pop();
                 // googleSignIn.signOut();
                 // ignore: deprecated_member_use
-                // _scaffoldKey.currentState.showSnackBar(
-                //     SnackBar(
-                //     content: Text('Você saiu com sucesso.'),
-                //     backgroundColor: Colors.green,
-                // ),
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(
+                    content: Text('Você saiu com sucesso.'),
+                    backgroundColor: Colors.green,
+                ));
             },
           ) : Container()
         ],
