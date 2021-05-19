@@ -7,6 +7,7 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
   final GoogleSignIn googleSignIn = GoogleSignIn();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseUser _usuarioAtual;
@@ -61,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+
       backgroundColor: Colors.deepPurple,
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -76,6 +79,13 @@ class _LoginPageState extends State<LoginPage> {
                   // ignore: sdk_version_set_literal
                   onPressed: () => {
                        entrar(context),
+                        // ignore: deprecated_member_use
+                        _scaffoldKey.currentState.showSnackBar(
+                        SnackBar(
+                        content: Text('Você saiu com sucesso.'),
+                        backgroundColor: Colors.green,
+                        )
+                    ),
                   }
                   ,
                   child: 

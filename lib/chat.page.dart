@@ -117,12 +117,15 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: () {
                 FirebaseAuth.instance.signOut();
                 googleSignIn.signOut();
+              Navigator.of(context).pop(context);
+
                 // ignore: deprecated_member_use
                 _scaffoldKey.currentState.showSnackBar(
                     SnackBar(
                     content: Text('Você saiu com sucesso.'),
                     backgroundColor: Colors.green,
                 ),
+                
         );
             },
           ) : Container()
