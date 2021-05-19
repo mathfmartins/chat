@@ -15,23 +15,22 @@
       },
       "oauth_client": [
         {
-          "client_id": "505944828140-psh9emadvev7q0gdofqcn56b97e6f65k.apps.googleusercontent.com",
-          "client_type": 3
+          "client_id": "505944828140-iv3ip6jj8haebonfcccgn29ppf22gdr1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.ciolfi.chat",
+            "certificate_hash": "9c49a39eb426860da5916149a629b438e8e7ec23"
+          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA4znnecMMdKr4s4S9tZhNCTmrlrD9Ys4Y"
+          "current_key": "AIzaSyCYKr0MuLgBlMsYE69cgc--QESPrdu3TZs"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "505944828140-psh9emadvev7q0gdofqcn56b97e6f65k.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
