@@ -1,12 +1,13 @@
 import 'dart:io';
 
-import 'package:chat/chat.message.dart';
 import 'package:chat/firebase/firebase.shazam.dart';
-import 'package:chat/text.composer.dart';
+import 'package:chat/view/text.composer.page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
+import 'chat.mensagem.page.dart';
 
 class ChatPage extends StatefulWidget {
 

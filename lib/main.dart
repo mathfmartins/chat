@@ -1,7 +1,8 @@
-import 'package:chat/chat.page.dart';
-import 'package:chat/login.page.dart';
+import 'package:chat/view/login.page.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import 'view/chat.page.dart';
 
 void main() async {
   runApp(MyApp());
