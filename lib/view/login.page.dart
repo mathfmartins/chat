@@ -1,4 +1,4 @@
-import 'package:chat/firebase/firebase.shazam.dart';
+import 'package:chat/firebase/shazam.firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
   bool estaCarregando = false;
 
 void entrar(BuildContext context) async {
-    final FirebaseUser user = await FireBaseShazam.getUser();
+    final FirebaseUser user = await ShazamFireBase.getUser();
     if (user == null) {
         // ignore: deprecated_member_use
         _scaffoldKey.currentState.showSnackBar(

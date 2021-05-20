@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:chat/firebase/firebase.shazam.dart';
+import 'package:chat/firebase/shazam.firebase.dart';
 import 'package:chat/view/text.composer.page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -94,7 +94,7 @@ class _ChatPageState extends State<ChatPage> {
           _usuarioAtual != null ? IconButton(
             icon: Icon(Icons.exit_to_app),
             onPressed: () {
-                  FireBaseShazam.googleSignIn.signOut();
+                  ShazamFireBase.googleSignIn.signOut();
                    FirebaseAuth.instance.signOut();
                    Navigator.of(context).pop();
                 // googleSignIn.signOut();
@@ -105,7 +105,13 @@ class _ChatPageState extends State<ChatPage> {
                     backgroundColor: Colors.green,
                 ));
             },
-          ) : Container()
+          ) : Container(),
+          IconButton(
+            icon: Icon(Icons.contact_page),
+            onPressed: () {
+                Navigator.of(context).pushNamed('/contatos');
+            }
+          ),
         ],
       ),
       body: Column(

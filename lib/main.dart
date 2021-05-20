@@ -1,4 +1,7 @@
+import 'package:chat/view/contatos.form.page.dart';
+import 'package:chat/view/contatos.page.dart';
 import 'package:chat/view/login.page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -46,9 +49,11 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.orange[400])
       ),
       routes: {
-        '/': (context) => LoginPage(),
+        // '/': (context) => LoginPage(),
+        '/': (context) => ContatosPage(),
+        '/contatoForm': (context) => ContatoFormPage(),
         // '/': (context) => ContatosPage(),
-        '/chat': (context) => ChatPage(),
+        // '/chat': (context) => ChatPage(),
       },
       // home: ChatPage(),
     );

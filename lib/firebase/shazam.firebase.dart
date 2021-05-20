@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class FireBaseShazam {
+class ShazamFireBase {
   static GoogleSignIn googleSignIn = GoogleSignIn();
   static FirebaseUser _usuarioAtual;
   static AuthResult authResult;
@@ -24,13 +24,7 @@ class FireBaseShazam {
         await FirebaseAuth.instance.signInWithCredential(credential);
 
       final FirebaseUser user = authResult.user;    
-      Map<String, dynamic> data = {
-        "uid": user.uid,
-        "nome": user.displayName,
-        "foto": user.photoUrl,
-        "hora": Timestamp.now() 
-      };
-
+    
       return user;  
     } catch (error) {
         return null;
