@@ -22,15 +22,15 @@ class _ContatosPageState extends State<ContatosPage> {
   @override
   // ignore: must_call_super  
   void initState() {
-      getContatos();
+      // getContatos();
 
   }
 
   getContatos() async {
-    await ContatosFireBase.getAllContatos();
-    setState(() {
-          contatos = ContatosFireBase.contatos;
-      });
+    // await ContatosFireBase.getAllContatos();
+    // setState(() {
+    //       contatos = ContatosFireBase.contatos;
+    //   });
   }
 
   @override
@@ -62,9 +62,9 @@ class _ContatosPageState extends State<ContatosPage> {
           onPressed: () async{
             await Navigator.of(context).pushNamed('/contatoForm');
 
-               setState(() {
-                      getContatos();
-                });
+              //  setState(() {
+              //         getContatos();
+              //   });
               // ContatosFireBase.getAllContatos();
             // setState(() {
             //   contatos = ContatosFireBase.contatos;

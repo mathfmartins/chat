@@ -71,8 +71,8 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                   "telefone": _editedContato.telefone
                };
               await Firestore.instance.collection('contatos').add(contatos); 
-              var contato = Contato(nome: _editedContato.nome, email: _editedContato.email, telefone: _editedContato.telefone);
-              await ContatosFireBase.addContato(contato);
+              // var contato = Contato(nome: _editedContato.nome, email: _editedContato.email, telefone: _editedContato.telefone);
+              // await ContatosFireBase.addContato(contato);
               // await ContatosFireBase.getAllContatos();
                Navigator.pop(context);
             } else {
