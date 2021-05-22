@@ -1,22 +1,22 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:chat/firebase/contatos.firebase.dart';
 import 'package:chat/models/contato.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ContatoFormPage extends StatefulWidget {
-
-  // final Contato Contato;
-
-  // ContatoFormPage({this.Contato});
-
+ 
   @override
   _ContatoFormPageState createState() => _ContatoFormPageState();
 }
 
 class _ContatoFormPageState extends State<ContatoFormPage> {
+
+//  final databaseReference = FirebaseDatabase(
+      // databaseURL: 'https://chat-4a1a8-default-rtdb.firebaseio.com/'
+    // ).reference();
 
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -44,6 +44,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
   //   }
   }
 
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -56,15 +57,24 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: (){
+          onPressed: () async{
             if(_editedContato.nome != null && _editedContato.nome.isNotEmpty){
+              // databaseReference.child('contatos')
+              //     .set({
+              //         "nome": _editedContato.nome,
+              //         "email": _editedContato.email,
+              //         "telefone": _editedContato.telefone 
+              //     });
              Map<String, dynamic> contatos = {
                   "nome": _editedContato.nome,
                   "email": _editedContato.email,
                   "telefone": _editedContato.telefone
                };
-            Firestore.instance.collection('contatos').add(contatos); 
-              Navigator.pop(context, _editedContato);
+              await Firestore.instance.collection('contatos').add(contatos); 
+              var contato = Contato(nome: _editedContato.nome, email: _editedContato.email, telefone: _editedContato.telefone);
+              await ContatosFireBase.addContato(contato);
+              // await ContatosFireBase.getAllContatos();
+               Navigator.pop(context);
             } else {
               FocusScope.of(context).requestFocus(_nameFocus);
             }
@@ -114,7 +124,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
               ),
               TextField(
                 controller: _phoneController,
-                decoration: InputDecoration(labelText: "Phone"),
+                decoration: InputDecoration(labelText: "Telefone"),
                 onChanged: (text){
                   _userEdited = true;
                   _editedContato.telefone = text;

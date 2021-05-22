@@ -133,7 +133,7 @@ class _ChatPageState extends State<ChatPage> {
                       reverse: true,
                       itemBuilder: (context, index){
                         return ListTile(
-                          title: ChatMessage(documents[index].data, //true, suponde que todas as mensagens são minhas
+                          title: ChatMessage(documents[index].data, //true, supondo que todas as mensagens são minhas
                                             documents[index].data['uid'] == _usuarioAtual?.uid)  
                         );
                       }, 

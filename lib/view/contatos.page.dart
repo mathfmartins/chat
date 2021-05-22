@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:chat/firebase/contatos.firebase.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:chat/models/contato.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -13,18 +12,24 @@ class ContatosPage extends StatefulWidget {
 }
 
 class _ContatosPageState extends State<ContatosPage> {
+    // final database = FirebaseDatabase(
+      // databaseURL: 'https://chat-4a1a8-default-rtdb.firebaseio.com/'
+    // ).reference();
 
-  // ContactHelper helper = ContactHelper();
-
-  // listaDeContatos<Contact> contacts = listaDeContatos();
-   final contat = ContatosFireBase.getAllContatos();
-
+    // ContactHelper helper = ContactHelper();  
+    List<Contato> contatos;
   @override
+  // ignore: must_call_super  
   void initState() {
-    
-    super.initState();
+      getContatos();
 
-    _getAllContacts();
+  }
+
+  getContatos() async {
+    await ContatosFireBase.getAllContatos();
+    setState(() {
+          contatos = ContatosFireBase.contatos;
+      });
   }
 
   @override
@@ -52,21 +57,29 @@ class _ContatosPageState extends State<ContatosPage> {
       ),
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
-          onPressed: (){
-        Navigator.of(context).pushNamed('/contatoForm');
+          onPressed: () async{
+            await Navigator.of(context).pushNamed('/contatoForm');
 
+               setState(() {
+                      getContatos();
+                });
+              // ContatosFireBase.getAllContatos();
+            // setState(() {
+            //   contatos = ContatosFireBase.contatos;
+            //     // contatos = ContatosFireBase.getAllContatos();
+            // });
             // _showContactPage();
           },
           child: Icon(Icons.add),
           backgroundColor: Colors.purple,
       ),
-      // body: listaDeContatosView.builder(
-      //     padding: EdgeInsets.all(10.0),
-      //     itemCount: contacts.length,
-      //     itemBuilder: (context, index) {
-      //       return _contactCard(context, index);
-      //     }
-      // ),
+      body: ListView.builder(
+          padding: EdgeInsets.all(10.0),
+          itemCount: contatos.length,
+          itemBuilder: (context, index) {
+            return _contactCard(context, index);
+          }
+      ),
     );
   }
 
@@ -93,16 +106,16 @@ class _ContatosPageState extends State<ContatosPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      // Text(contacts[index].name ?? "",
-                      //   style: TextStyle(fontSize: 22.0,
-                      //       fontWeight: FontWeight.bold),
-                      // ),
-                      // Text(contacts[index].email ?? "",
-                      //   style: TextStyle(fontSize: 18.0),
-                      // ),
-                      // Text(contacts[index].phone ?? "",
-                      //   style: TextStyle(fontSize: 18.0),
-                      // )
+                      Text(contatos[index].nome ?? "",
+                        style: TextStyle(fontSize: 22.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(contatos[index].email ?? "",
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                      Text(contatos[index].telefone?? "",
+                        style: TextStyle(fontSize: 18.0),
+                      )
                     ],
                   ),
                 )
@@ -136,7 +149,7 @@ class _ContatosPageState extends State<ContatosPage> {
                           style: TextStyle(color: Colors.red, fontSize: 20.0),
                         ),
                         onPressed: (){
-                          // launch("tel:${contacts[index].phone}");
+                          launch("tel:${contatos[index].telefone}");
                           Navigator.pop(context);
                         },
                       ),
@@ -150,7 +163,7 @@ class _ContatosPageState extends State<ContatosPage> {
                         ),
                         onPressed: (){
                           Navigator.pop(context);
-                          // _showContactPage(contact: contacts[index]);
+                          // _showContactPage(contact: contatos[index]);
                         },
                       ),
                     ),
@@ -162,9 +175,9 @@ class _ContatosPageState extends State<ContatosPage> {
                           style: TextStyle(color: Colors.red, fontSize: 20.0),
                         ),
                         onPressed: (){
-                          // helper.deleteContact(contacts[index].id);
+                          // helper.deleteContact(contatos[index].id);
                           setState(() {
-                            // contacts.removeAt(index);
+                            // contatos.removeAt(index);
                             Navigator.pop(context);
                           });
                         },
@@ -189,35 +202,27 @@ class _ContatosPageState extends State<ContatosPage> {
   //     } else {
   //       await helper.saveContact(recContact);
   //     }
-  //     _getAllContacts();
+  //     _getAllcontatos();
   //   }
   // }
 
-  void _getAllContacts() async {
-     QuerySnapshot querySnapshot = await Firestore.instance
-        .collection('mensagens')
-        .getDocuments();
-
-    querySnapshot.documents.forEach((element) {
-    print(element.data);
-    print(element.documentID);
-    });
-    // helper.getAllContacts().then((listaDeContatos){
-      setState(() {
-        // contacts = listaDeContatos;
-      });
-    // });
+  // void _getAllcontatos() async {
+  //   helper.getAllcontatos().then((listaDeContatos){
+  //     setState(() {
+  //       // contatos = listaDeContatos;
+  //     });
+  //   });
   
   }
   // void _orderlistaDeContatos(OrderOptions result){
   //   switch(result){
   //     case OrderOptions.orderaz:
-  //       contacts.sort((a, b) {
+  //       contatos.sort((a, b) {
   //         return a.name.toLowerCase().compareTo(b.name.toLowerCase());
   //       });
   //       break;
   //     case OrderOptions.orderza:
-  //       // contacts.sort((a, b) {
+  //       // contatos.sort((a, b) {
   //         return b.name.toLowerCase().compareTo(a.name.toLowerCase());
   //       });
   //       break;
@@ -227,4 +232,4 @@ class _ContatosPageState extends State<ContatosPage> {
     // });
   // }
 
-}
+// }
