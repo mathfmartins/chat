@@ -42,6 +42,7 @@ class _TextComposerState extends State<TextComposer> {
               widget._enviarMensagem(imgFile: imgFile);
           }
         ),
+      
         Expanded(child: TextField(
           decoration: InputDecoration.collapsed(hintText: 'Enviar uma Mensagem'),
           controller: _controller,
@@ -55,6 +56,17 @@ class _TextComposerState extends State<TextComposer> {
              _resetar();
           },
         )),
+            IconButton(
+          icon: Icon(Icons.folder_shared_outlined), 
+          onPressed: () async {
+              final File imgFile = 
+                       // ignore: deprecated_member_use
+                       await ImagePicker.pickImage(source: ImageSource.gallery); 
+              if (imgFile == null) return;
+              widget._enviarMensagem(imgFile: imgFile);
+          }
+          
+        ),
         IconButton(
           icon: Icon(Icons.send),
           onPressed: _estaDigitando ? () {

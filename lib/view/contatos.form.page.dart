@@ -57,11 +57,10 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            if (_editedContato.nome.isEmpty || _editedContato.email.isEmpty || _editedContato.telefone.isEmpty) {
+            if (_nameController.text.isEmpty || _phoneController.text.isEmpty || _emailController.text.isEmpty) {
               FocusScope.of(context).requestFocus(_nameFocus);
-
             }
-              else if (contato != null) {
+            else if (contato != null) {
                     QuerySnapshot querySnapshot = await Firestore.instance
                           .collection('contatos')
                           .getDocuments();
@@ -69,18 +68,21 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                       querySnapshot.documents.forEach((element) {
                       if (element.data['telefone'] == contato['telefone'] && element.data['nome'] == contato['nome']) {
                             element.reference.updateData({
-                                  'nome': _editedContato.nome,
-                                  'telefone': _editedContato.email,
-                                  'email': _editedContato.telefone
+                              
+                                  'nome': _nameController.text,
+                                  'telefone': _phoneController.text,
+                                  'email': _emailController.text
                               });
                       }
                     });
+               Navigator.pop(context);
+
               }
               else {
              Map<String, dynamic> contatos = {
-                  "nome": _editedContato.nome,
-                  "email": _editedContato.email,
-                  "telefone": _editedContato.telefone
+                     'nome': _nameController.text,
+                      'telefone': _phoneController.text,
+                      'email': _emailController.text
                };
                 await Firestore.instance.collection('contatos').add(contatos); 
               }
