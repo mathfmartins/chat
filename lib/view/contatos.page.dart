@@ -25,7 +25,7 @@ class _ContatosPageState extends State<ContatosPage> {
 
   @override
   Widget build(BuildContext context) {
-    // var snapshots = Firestore.instance.collection('contatos').where('excluido', isEqualTo: false).snapshots();
+    var snapshots =  Firestore.instance.collection('contatos').orderBy('nome').snapshots();
     return Scaffold(
       appBar: AppBar(
         title: Text("Contatos"),
@@ -56,7 +56,7 @@ class _ContatosPageState extends State<ContatosPage> {
           backgroundColor: Colors.purple,
       ),
       body: StreamBuilder(
-        stream: Firestore.instance.collection('contatos').orderBy('nome').snapshots(),
+        stream: snapshots,
         // ignore: missing_return
         // ignore: non_constant_identifier_names
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -143,8 +143,8 @@ class _ContatosPageState extends State<ContatosPage> {
                                                     style: TextStyle(color: Colors.red, fontSize: 20.0),
                                                   ),
                                                   onPressed: (){
-                                                    // Navigator.of(context).pushNamed('/contatoForm', arguments: documents[index].data);
-                                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ContatoFormPage(contato: documents[index].data))); 
+                                                    Navigator.of(context).pushNamed('/contatoForm', arguments: documents[index].data);
+                                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => ContatoFormPage(contato: documents[index].data))); 
                                                   
                                                     // _showContactPage(contact: contatos[index]);
                                                   },
@@ -158,8 +158,7 @@ class _ContatosPageState extends State<ContatosPage> {
                                                     style: TextStyle(color: Colors.red, fontSize: 20.0),
                                                   ),
                                                   onPressed: () {
-
-                                                    snapshot.data.documents.removeWhere((element) => element.data['nome'] == documents[index].data['nome']);
+                                                    documents[index].reference.delete();      
                                                       Navigator.pop(context);
                                                   },
                                                 ),

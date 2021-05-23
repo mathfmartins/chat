@@ -7,9 +7,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ContatoFormPage extends StatefulWidget {
-  ContatoFormPage({Map<String, dynamic> contato}){
-      print(contato);
-  }
 
   @override
   _ContatoFormPageState createState() => _ContatoFormPageState();
@@ -38,33 +35,33 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
   @override
   Widget build(BuildContext context) {
      Map<String, dynamic> contato = ModalRoute.of(context).settings.arguments; 
-    // if (contato != null) {
-    //   setState(() {
-    //     _nameController.text = contato['nome'];
-    //     _phoneController.text = contato['telefone'];
-    //     _emailController.text = contato['email'];
-    //   });
-    // }
+     var titulo = contato == null ? 'Novo Contato' : contato['nome'];
     return WillPopScope(
       onWillPop: _requestPop,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.purple,
-          title: Text(contato['nome'] ?? "Novo Contato"),
-          
+          title: Text(titulo),
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () async{
-            if(_editedContato.nome != null && _editedContato.nome.isNotEmpty){
+          onPressed: () async {
               if (contato != null) {
-                var snapshot = Firestore.instance.document('contatos');
-                snapshot.updateData(({
-                  'nome': contato['nome'],
-                  'telefone': contato['telefone'],
-                  'email': contato['email'],
-                }));
-              }else {
+                    QuerySnapshot querySnapshot = await Firestore.instance
+                          .collection('contatos')
+                          .getDocuments();
+                    
+                      querySnapshot.documents.forEach((element) {
+                      if (element.data['telefone'] == contato['telefone'] && element.data['nome'] == contato['nome']) {
+                            element.reference.updateData({
+                                  'nome': _editedContato.nome,
+                                  'telefone': _editedContato.email,
+                                  'email': _editedContato.telefone
+                              });
+                      }
+                    });
+              }
+              else {
              Map<String, dynamic> contatos = {
                   "nome": _editedContato.nome,
                   "email": _editedContato.email,
@@ -73,9 +70,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                 await Firestore.instance.collection('contatos').add(contatos); 
               }
                Navigator.pop(context);
-            } else {
               FocusScope.of(context).requestFocus(_nameFocus);
-            }
           },
           child: Icon(Icons.save),
           backgroundColor: Colors.purple,
@@ -105,7 +100,6 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                 focusNode: _nameFocus,
                 decoration: InputDecoration(labelText: "Nome"),
                 onChanged: (text){
-                    
                   _userEdited = true;
                   setState(() {
                     _editedContato.nome = text;
@@ -156,7 +150,6 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
               FlatButton(
                 child: Text("Sim"),
                 onPressed: (){
-                  Navigator.pop(context);
                   Navigator.pop(context);
                 },
               ),
