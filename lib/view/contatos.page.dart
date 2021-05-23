@@ -69,7 +69,7 @@ class _ContatosPageState extends State<ContatosPage> {
                     List<DocumentSnapshot> documents =  snapshot.data.documents.reversed.toList();
                     return ListView.builder(
                       itemCount: documents.length,
-                      reverse: true,
+                      reverse: false,
                       itemBuilder: (context, index){
                         return GestureDetector(
                             child: Card(
