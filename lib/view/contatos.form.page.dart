@@ -7,21 +7,18 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ContatoFormPage extends StatefulWidget {
- 
+  ContatoFormPage({Map<String, dynamic> contato}){
+      print(contato);
+  }
+
   @override
   _ContatoFormPageState createState() => _ContatoFormPageState();
 }
 
 class _ContatoFormPageState extends State<ContatoFormPage> {
-
-//  final databaseReference = FirebaseDatabase(
-      // databaseURL: 'https://chat-4a1a8-default-rtdb.firebaseio.com/'
-    // ).reference();
-
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-
   final _nameFocus = FocusNode();
 
   bool _userEdited = false;
@@ -30,50 +27,51 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
 
   @override
   void initState() {
-   
-    super.initState();
-
-  //   if(widget.Contato == null){
-  //     // _editedContato = Contato();
-  //   } else {
-  //     // _editedContato = Contato.fromMap(widget.Contato.toMap());
-
-  //     // _nameController.text = _editedContato.name;
-  //     // _emailController.text = _editedContato.email;
-  //     // _phoneController.text = _editedContato.phone;
-  //   }
+    // if (contato != null) {
+    //  _nameController.text = contato['nome'];
+    //     _phoneController.text = contato['telefone'];
+    //     _emailController.text = contato['email'];
+    // }
   }
 
 
   @override
   Widget build(BuildContext context) {
+     Map<String, dynamic> contato = ModalRoute.of(context).settings.arguments; 
+    // if (contato != null) {
+    //   setState(() {
+    //     _nameController.text = contato['nome'];
+    //     _phoneController.text = contato['telefone'];
+    //     _emailController.text = contato['email'];
+    //   });
+    // }
     return WillPopScope(
-      // onWillPop: _requestPop,
-      onWillPop: () {  },
+      onWillPop: _requestPop,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.purple,
-          title: Text("Novo Contato"),
+          title: Text(contato['nome'] ?? "Novo Contato"),
+          
           centerTitle: true,
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async{
             if(_editedContato.nome != null && _editedContato.nome.isNotEmpty){
-              // databaseReference.child('contatos')
-              //     .set({
-              //         "nome": _editedContato.nome,
-              //         "email": _editedContato.email,
-              //         "telefone": _editedContato.telefone 
-              //     });
+              if (contato != null) {
+                var snapshot = Firestore.instance.document('contatos');
+                snapshot.updateData(({
+                  'nome': contato['nome'],
+                  'telefone': contato['telefone'],
+                  'email': contato['email'],
+                }));
+              }else {
              Map<String, dynamic> contatos = {
                   "nome": _editedContato.nome,
                   "email": _editedContato.email,
                   "telefone": _editedContato.telefone
                };
-              await Firestore.instance.collection('contatos').add(contatos); 
-              // var contato = Contato(nome: _editedContato.nome, email: _editedContato.email, telefone: _editedContato.telefone);
-              // await ContatosFireBase.addContato(contato);
-              // await ContatosFireBase.getAllContatos();
+                await Firestore.instance.collection('contatos').add(contatos); 
+              }
                Navigator.pop(context);
             } else {
               FocusScope.of(context).requestFocus(_nameFocus);
@@ -107,6 +105,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                 focusNode: _nameFocus,
                 decoration: InputDecoration(labelText: "Nome"),
                 onChanged: (text){
+                    
                   _userEdited = true;
                   setState(() {
                     _editedContato.nome = text;

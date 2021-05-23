@@ -44,15 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                   // ignore: sdk_version_set_literal
                   onPressed: () => {
                        entrar(context),
-                        // ignore: deprecated_member_use
-                    //     _scaffoldKey.currentState.showSnackBar(
-                    //     SnackBar(
-                    //     content: Text('Você saiu com sucesso.'),
-                    //     backgroundColor: Colors.green,
-                    //     )
-                    // ),
-                  }
-                  ,
+                  },
                   child: 
                     Text('Entrar com o Google',
                     style: TextStyle(color: Colors.deepPurple)
