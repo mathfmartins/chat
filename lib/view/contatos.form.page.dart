@@ -17,7 +17,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _nameFocus = FocusNode();
-
+  var cont = 0;
   bool _userEdited = false;
 
   Contato _editedContato = Contato();
@@ -36,6 +36,15 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
   Widget build(BuildContext context) {
      Map<String, dynamic> contato = ModalRoute.of(context).settings.arguments; 
      var titulo = contato == null ? 'Novo Contato' : contato['nome'];
+     cont++;
+     if (contato != null && cont == 1) {
+       setState(() {
+          _nameController.text = contato['nome'];
+          _phoneController.text = contato['telefone'];
+          _emailController.text = contato['email'];
+      });
+      
+     }
     return WillPopScope(
       onWillPop: _requestPop,
       child: Scaffold(
