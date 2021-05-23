@@ -151,6 +151,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
                 child: Text("Sim"),
                 onPressed: (){
                   Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ],
