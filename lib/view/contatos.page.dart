@@ -34,6 +34,7 @@ class _ContatosPageState extends State<ContatosPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           user != null ? 'Olá, ${user.displayName}' : 'Shazam'
         ),

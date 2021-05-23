@@ -1,3 +1,4 @@
+import 'package:chat/firebase/shazam.firebase.dart';
 import 'package:chat/view/chat.page.dart';
 import 'package:chat/view/contatos.form.page.dart';
 import 'package:chat/view/contatos.page.dart';
@@ -38,6 +39,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  var user = ShazamFireBase.authResult;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.orange[400])
       ),
       routes: {
-        '/': (context) => LoginPage(),
+        '/': (context) => user == null ? LoginPage() : ContatosPage(),
         '/contatos': (context) => ContatosPage(),
         '/contatoForm': (context) => ContatoFormPage(),
         // '/': (context) => ContatosPage(),
