@@ -46,7 +46,11 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-              if (contato != null) {
+            if (_editedContato.nome.isEmpty || _editedContato.email.isEmpty || _editedContato.telefone.isEmpty) {
+              FocusScope.of(context).requestFocus(_nameFocus);
+
+            }
+              else if (contato != null) {
                     QuerySnapshot querySnapshot = await Firestore.instance
                           .collection('contatos')
                           .getDocuments();
