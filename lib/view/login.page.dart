@@ -20,7 +20,7 @@ void entrar(BuildContext context) async {
         );
     }
     else 
-        Navigator.of(context).pushNamed('/chat', arguments: user);
+        Navigator.of(context).pushNamed('/contatos', arguments: user);
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ButtonTheme(
-                height: 60.0,
+                height: 60.0, 
                 // ignore: deprecated_member_use
                 child: RaisedButton(
                   // ignore: sdk_version_set_literal

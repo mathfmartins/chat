@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chat/firebase/contatos.firebase.dart';
 import 'package:chat/models/contato.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,7 @@ class _ContatoFormPageState extends State<ContatoFormPage> {
   @override
   Widget build(BuildContext context) {
      Map<String, dynamic> contato = ModalRoute.of(context).settings.arguments; 
+
      var titulo = contato == null ? 'Novo Contato' : contato['nome'];
      cont++;
      if (contato != null && cont == 1) {

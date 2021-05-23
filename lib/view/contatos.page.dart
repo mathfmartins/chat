@@ -1,6 +1,8 @@
 import 'package:chat/firebase/contatos.firebase.dart';
+import 'package:chat/firebase/shazam.firebase.dart';
 import 'package:chat/models/contato.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,6 +17,8 @@ class ContatosPage extends StatefulWidget {
 }
 
 class _ContatosPageState extends State<ContatosPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   // ignore: must_call_super  
   void initState() {
@@ -25,13 +29,33 @@ class _ContatosPageState extends State<ContatosPage> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseUser user = ModalRoute.of(context).settings.arguments; 
     var snapshots =  Firestore.instance.collection('contatos').orderBy('nome').snapshots();
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Contatos"),
+        title: Text(
+          user != null ? 'Olá, ${user.displayName}' : 'Shazam'
+        ),
         backgroundColor: Colors.purple,
         centerTitle: true,
         actions: <Widget>[
+            IconButton(
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+                  ShazamFireBase.googleSignIn.signOut();
+                   FirebaseAuth.instance.signOut();
+                   Navigator.of(context).pushNamed('/');
+                  //  Navigator.of(context).pop
+                // googleSignIn.signOut();
+                // ignore: deprecated_member_use
+                _scaffoldKey.currentState.showSnackBar(
+                    SnackBar(
+                    content: Text('Você saiu com sucesso.'),
+                    backgroundColor: Colors.green,
+                ));
+            },
+          ),
           PopupMenuButton<OrderOptions>(
             itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
               const PopupMenuItem<OrderOptions>(
@@ -96,6 +120,7 @@ class _ContatosPageState extends State<ContatosPage> {
                                             Text(documents[index].data['nome'] ?? "",
                                               style: TextStyle(fontSize: 22.0,
                                                   fontWeight: FontWeight.bold),
+                                                
                                             ),
                                             Text(documents[index].data['email'] ?? "",
                                               style: TextStyle(fontSize: 18.0),
@@ -122,6 +147,18 @@ class _ContatosPageState extends State<ContatosPage> {
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.all(10.0),
+                                                // ignore: deprecated_member_use
+                                                child: FlatButton(
+                                                  child: Text("Conversar",
+                                                    style: TextStyle(color: Colors.red, fontSize: 20.0),
+                                                  ),
+                                                  onPressed: (){
+                                                    Navigator.of(context).pushNamed('/chat', arguments: user);
+                                                  },
+                                                ),
+                                              ),
                                               Padding(
                                                 padding: EdgeInsets.all(10.0),
                                                 // ignore: deprecated_member_use

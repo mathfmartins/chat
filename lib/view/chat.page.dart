@@ -86,8 +86,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(
-          _usuarioAtual != null ? 'Olá, ${_usuarioAtual.displayName}' : 'Shazam'),
+        title: Text('Shazam'),
           centerTitle: true,
         elevation: 0,
         actions: [
@@ -96,7 +95,8 @@ class _ChatPageState extends State<ChatPage> {
             onPressed: () {
                   ShazamFireBase.googleSignIn.signOut();
                    FirebaseAuth.instance.signOut();
-                   Navigator.of(context).pop();
+                   Navigator.of(context).pushNamed('/');
+                  //  Navigator.of(context).pop
                 // googleSignIn.signOut();
                 // ignore: deprecated_member_use
                 _scaffoldKey.currentState.showSnackBar(
@@ -107,7 +107,7 @@ class _ChatPageState extends State<ChatPage> {
             },
           ) : Container(),
           IconButton(
-            icon: Icon(Icons.contact_page),
+            icon: Icon(Icons.person),
             onPressed: () {
                 Navigator.of(context).pushNamed('/contatos');
             }
