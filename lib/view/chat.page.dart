@@ -41,11 +41,11 @@ class _ChatPageState extends State<ChatPage> {
     // final FirebaseUser user = await _getUser();
     if (user == null) {
         // ignore: deprecated_member_use
-        _scaffoldKey.currentState.showSnackBar(
-          SnackBar(content: Text('Não foi possível fazer o login. Tente novamente.'),
-          backgroundColor: Colors.red,
-          ),
-        );
+        // _scaffoldKey.currentState.showSnackBar(
+        //   SnackBar(content: Text('Não foi possível fazer o login. Tente novamente.'),
+        //   backgroundColor: Colors.red,
+        //   ),
+        // );
     }
     Map<String, dynamic> data = {
       "uid": user.uid,

@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => user == null ? LoginPage() : ContatosPage(),
         '/contatos': (context) => ContatosPage(),
         '/contatoForm': (context) => ContatoFormPage(),
-        // '/': (context) => ContatosPage(),
         '/chat': (context) => ChatPage(),
       },
       // home: ChatPage(),
